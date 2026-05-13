@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bensmat Bookkeeping — Clean books. Accurate numbers. Real communication.</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@1,16,400;1,16,500&display=swap');
+
+    :root {
+      --navy:        #1A3A6B;
+      --navy-deep:   #0F2347;
+      --bg-navy:     #0E1F3A;
+      --bg-navy-soft:#1A2E54;
+      --powder:      #6FA8D6;
+      --powder-soft: #A8C8E8;
+      --mist:        #F4F6FA;
+      --mist-soft:   #F8FAFD;
+
+      --bg-cream:        #F4F6FA;
+      --bg-cream-soft:   #F8FAFD;
+      --bg-white:        #FFFFFF;
+      --bg-forest:       #0E1F3A;
+      --bg-forest-soft:  #1A2E54;
+
+      --ink:        #0F1B2C;
+      --ink-soft:   #44546B;
+      --ink-mute:   #8C95A5;
+      --ink-invert: #F4F6FA;
+
+      --forest:      #1A3A6B;
+      --forest-deep: #0F2347;
+      --moss:        #A8C8E8;
+      --gold:        #6FA8D6;
+      --gold-soft:   #D8E5F2;
+
+      --border:        #DCE3ED;
+      --border-white:  #E4EAF2;
+      --border-strong: #0F1B2C;
+
+      --color-fg:           var(--ink);
+      --color-fg-soft:      var(--ink-soft);
+      --color-fg-mute:      var(--ink-mute);
+      --color-bg:           var(--bg-cream);
+      --color-surface:      var(--bg-white);
+      --color-link:         var(--forest);
+      --color-link-hover:   var(--forest-deep);
+      --color-primary:      var(--forest);
+      --color-primary-hover:var(--forest-deep);
+      --color-accent:       var(--gold);
+      --color-success:      var(--forest);
+      --color-divider:      var(--border);
+
+      --font-sans:   "Geist", ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      --font-italic: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+      --font-mono:   ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+      --fz-display:    56px;   --lh-display:    60px;
+      --fz-h1:         48px;   --lh-h1:         54px;
+      --fz-h2:         40px;   --lh-h2:         46px;
+      --fz-h3:         22px;   --lh-h3:         30px;
+      --fz-h4:         18px;   --lh-h4:         26px;
+      --fz-body-lg:    19px;   --lh-body-lg:    30px;
+      --fz-body:       17px;   --lh-body:       28px;
+      --fz-small:      14px;   --lh-small:      22px;
+      --fz-eyebrow:    13px;   --lh-eyebrow:    16px;
+
+      --fw-regular:  400;
+      --fw-medium:   500;
+      --fw-semibold: 600;
+      --fw-bold:     700;
+      --tracking-eyebrow: 0.14em;
+      --tracking-tight:   -0.01em;
+      --tracking-display: -0.02em;
+
+      --space-1: 4px;   --space-2: 8px;   --space-3: 16px;  --space-4: 24px;
+      --space-5: 32px;  --space-6: 48px;  --space-7: 64px;  --space-8: 80px;
+      --space-9: 96px;  --space-10: 128px; --space-11: 160px;
+
+      --radius-xs:   4px;  --radius-sm:  8px;  --radius-md: 12px;
+      --radius-lg:  20px;  --radius-pill: 999px;
+
+      --shadow-sm: 0 1px 2px rgba(15,27,44,0.04), 0 1px 3px rgba(15,27,44,0.06);
+      --shadow-md: 0 4px 12px rgba(15,27,44,0.06), 0 12px 32px rgba(15,27,44,0.08);
+      --shadow-lg: 0 8px 24px rgba(15,27,44,0.08), 0 24px 56px rgba(15,27,44,0.12);
+      --shadow-focus: 0 0 0 2px rgba(26,58,107,0.25);
+
+      --container-max: 1120px;
+      --container-pad: 24px;
+      --section-py:    160px;
+      --section-py-md: 96px;
+
+      --ease:        cubic-bezier(0.2, 0.7, 0.2, 1);
+      --dur-fast:    150ms;
+      --dur:         250ms;
+      --dur-slow:    600ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg-cream);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: var(--fz-body);
+      line-height: var(--lh-body);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    a:focus-visible, button:focus-visible, input:focus-visible,
+    select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--forest); outline-offset: 2px; border-radius: 4px;
+    }
+  </style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    function useIsMobile(bp = 768) {
+      const [mobile, setMobile] = useState(() => window.innerWidth <= bp);
+      useEffect(() => {
+        const h = () => setMobile(window.innerWidth <= bp);
+        window.addEventListener('resize', h);
+        return () => window.removeEventListener('resize', h);
+      }, [bp]);
+      return mobile;
+    }
+
+    /* ── UI Primitives ── */
+
+    function Button({ variant = 'primary', children, onClick, as = 'button', href, type }) {
+      const [hover, setHover] = useState(false);
+      const [press, setPress] = useState(false);
+
+      const base = {
+        fontFamily: 'var(--font-sans)',
+        fontSize: 15, fontWeight: 500, lineHeight: 1,
+        letterSpacing: '-0.005em', padding: '13px 22px', borderRadius: 12,
+        cursor: 'pointer',
+        transition: 'background 150ms var(--ease), color 150ms var(--ease), transform 150ms var(--ease)',
+        transform: press ? 'translateY(1px)' : 'translateY(0)',
+        textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none',
+      };
+
+      const variants = {
+        primary:   { background: hover ? 'var(--forest-deep)' : 'var(--forest)', color: 'var(--bg-cream)' },
+        secondary: { background: hover ? 'var(--ink)' : 'transparent', color: hover ? 'var(--bg-cream)' : 'var(--ink)', border: '1px solid var(--ink)', padding: '12px 21px' },
+        forest:    { background: hover ? '#F4F6FA' : 'var(--gold)', color: 'var(--ink)' },
+        ghost:     { background: hover ? 'rgba(255,255,255,0.08)' : 'transparent', color: '#F4F6FA', border: '1px solid rgba(244,239,228,0.4)' },
+      };
+
+      const props = {
+        style: { ...base, ...variants[variant] },
+        onMouseEnter: () => setHover(true),
+        onMouseLeave: () => { setHover(false); setPress(false); },
+        onMouseDown: () => setPress(true),
+        onMouseUp: () => setPress(false),
+        onClick, type,
+      };
+
+      if (as === 'a') return <a href={href} {...props}>{children}</a>;
+      return <button {...props}>{children}</button>;
+    }
+
+    function Eyebrow({ children, color = 'var(--ink-mute)' }) {
+      return (
+        <div style={{
+          fontSize: 13, lineHeight: '16px', fontWeight: 500,
+          letterSpacing: '0.14em', textTransform: 'uppercase', color,
+        }}>{children}</div>
+      );
+    }
+
+    function Punch({ children }) {
+      return (
+        <em style={{
+          fontFamily: 'var(--font-italic)', fontStyle: 'italic',
+          fontWeight: 500, fontOpticalSizing: 'auto', letterSpacing: 0,
+        }}>{children}</em>
+      );
+    }
+
+    function Stars({ size = 14, color = 'var(--gold)' }) {
+      return <span style={{ color, fontSize: size, letterSpacing: 1 }}>★★★★★</span>;
+    }
+
+    function Check({ children }) {
+      return (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, color: 'var(--ink)' }}>
+          <span style={{ color: 'var(--forest)', fontWeight: 700 }}>✓</span>
+          {children}
+        </span>
+      );
+    }
+
+    function Logo({ size = 28, light = false }) {
+      return (
+        <div style={{
+          width: size, height: size, borderRadius: 999,
+          background: light ? 'var(--bg-cream)' : 'var(--forest)',
+          color: light ? 'var(--bg-forest)' : 'var(--bg-cream)',
+          display: 'grid', placeItems: 'center',
+          fontWeight: 600, fontSize: size * 0.55, letterSpacing: '-0.02em', flexShrink: 0,
+        }}>B</div>
+      );
+    }
+
+    function Container({ children, style }) {
+      return (
+        <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto', padding: '0 var(--container-pad)', ...style }}>
+          {children}
+        </div>
+      );
+    }
+
+    function Section({ children, id, background, eyebrow, style }) {
+      return (
+        <section id={id} style={{ background, padding: 'clamp(80px, 12vw, 160px) 0', ...style }}>
+          <Container>
+            {eyebrow && <div style={{ marginBottom: 24 }}><Eyebrow>{eyebrow}</Eyebrow></div>}
+            {children}
+          </Container>
+        </section>
+      );
+    }
+
+    /* ── Nav ── */
+
+    function Nav() {
+      const isMobile = useIsMobile();
+      const [scrolled, setScrolled] = useState(false);
+      const [menuOpen, setMenuOpen] = useState(false);
+
+      useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 8);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+      }, []);
+
+      // Close menu when switching to desktop
+      useEffect(() => { if (!isMobile) setMenuOpen(false); }, [isMobile]);
+
+      function NavLink({ href, children }) {
+        const [hover, setHover] = useState(false);
+        return (
+          <a href={href} onClick={() => setMenuOpen(false)}
+            onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+            style={{ fontSize: 14, color: hover ? 'var(--ink)' : 'var(--ink-soft)', textDecoration: 'none', transition: 'color 150ms var(--ease)' }}>
+            {children}
+          </a>
+        );
+      }
+
+      return (
+        <nav style={{
+          position: 'sticky', top: 0, zIndex: 50,
+          background: 'rgba(244,246,250,0.8)',
+          backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: scrolled || menuOpen ? '1px solid var(--border)' : '1px solid transparent',
+          transition: 'border-color 250ms var(--ease)',
+        }}>
+          <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px var(--container-pad)' }}>
+            <a href="#top" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'var(--ink)' }}>
+              <Logo size={28} />
+              <span style={{ fontWeight: 600, fontSize: 16, letterSpacing: '-0.01em' }}>Bensmat Bookkeeping</span>
+            </a>
+
+            {isMobile ? (
+              <button onClick={() => setMenuOpen(o => !o)} style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                padding: 8, display: 'flex', flexDirection: 'column', gap: 5,
+              }} aria-label="Toggle menu">
+                <span style={{ display: 'block', width: 22, height: 2, background: 'var(--ink)', borderRadius: 2, transition: 'all 200ms', transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+                <span style={{ display: 'block', width: 22, height: 2, background: 'var(--ink)', borderRadius: 2, opacity: menuOpen ? 0 : 1, transition: 'opacity 200ms' }} />
+                <span style={{ display: 'block', width: 22, height: 2, background: 'var(--ink)', borderRadius: 2, transition: 'all 200ms', transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+              </button>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+                <NavLink href="#services">Services</NavLink>
+                <NavLink href="#pricing">Pricing</NavLink>
+                <NavLink href="#about">About</NavLink>
+                <NavLink href="#contact">Contact</NavLink>
+                <a href="mailto:khalid@bensmatbookkeeping.com" style={{
+                  background: 'var(--ink)', color: 'var(--bg-cream)',
+                  padding: '8px 14px', borderRadius: 999,
+                  fontSize: 13, fontWeight: 500, textDecoration: 'none',
+                }}>Book a Free Call</a>
+              </div>
+            )}
+          </Container>
+
+          {isMobile && menuOpen && (
+            <div style={{
+              borderTop: '1px solid var(--border)',
+              background: 'rgba(244,246,250,0.97)',
+              padding: '20px 24px 24px',
+              display: 'flex', flexDirection: 'column', gap: 20,
+            }}>
+              {['#services', '#pricing', '#about', '#contact'].map((href, i) => (
+                <a key={href} href={href} onClick={() => setMenuOpen(false)} style={{
+                  fontSize: 17, fontWeight: 500, color: 'var(--ink)', textDecoration: 'none',
+                }}>{['Services', 'Pricing', 'About', 'Contact'][i]}</a>
+              ))}
+              <a href="mailto:khalid@bensmatbookkeeping.com" onClick={() => setMenuOpen(false)} style={{
+                background: 'var(--ink)', color: 'var(--bg-cream)',
+                padding: '12px 20px', borderRadius: 999, textAlign: 'center',
+                fontSize: 15, fontWeight: 500, textDecoration: 'none', marginTop: 4,
+              }}>Book a Free Call</a>
+            </div>
+          )}
+        </nav>
+      );
+    }
+
+    /* ── Hero ── */
+
+    function Hero() {
+      const isMobile = useIsMobile();
+      const photoSize = isMobile ? 220 : 320;
+      return (
+        <section id="top" style={{ padding: 'clamp(64px, 10vw, 128px) 0 clamp(64px, 8vw, 96px)' }}>
+          <Container style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1.4fr 1fr',
+            gap: isMobile ? 40 : 80,
+            alignItems: 'center',
+          }}>
+            {isMobile && (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ width: photoSize, height: photoSize, borderRadius: 999, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--bg-cream-soft)' }}>
+                  <img src="assets/khalid-about.jpg" alt="Khalid Bensmat — Bensmat Bookkeeping"
+                    style={{ width: '100%', height: '100%', objectPosition: 'center 35%', objectFit: 'cover' }} />
+                </div>
+              </div>
+            )}
+            <div>
+              <div style={{ marginBottom: 24 }}><Eyebrow>Newark, NJ</Eyebrow></div>
+              <h1 style={{
+                fontFamily: 'var(--font-sans)', fontSize: 'clamp(40px, 5.5vw, 64px)',
+                lineHeight: 1.05, fontWeight: 600, letterSpacing: '-0.02em',
+                color: 'var(--ink)', margin: '0 0 24px',
+              }}>
+                Love your first month, <Punch>or it's free</Punch>.
+              </h1>
+              <p style={{ fontSize: 19, lineHeight: '30px', color: 'var(--ink-soft)', maxWidth: 520, margin: '0 0 32px' }}>
+                Clean books. Accurate numbers. Real communication.
+              </p>
+              <div style={{ display: 'flex', gap: 12, marginBottom: 32, flexWrap: 'wrap' }}>
+                <Button as="a" href="#contact">Book a Free Call</Button>
+                <Button variant="secondary" as="a" href="#contact">Send a Message</Button>
+              </div>
+              <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap', color: 'var(--ink-soft)', fontSize: 14 }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                  <Stars /> <b style={{ color: 'var(--ink)', fontWeight: 500 }}>Google · 5.0</b>
+                </span>
+                <span style={{ color: 'var(--ink-mute)' }}>·</span>
+                <Check>Intuit Certified</Check>
+                <span style={{ color: 'var(--ink-mute)' }}>·</span>
+                <Check>QuickBooks ProAdvisor</Check>
+              </div>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginTop: 24, flexWrap: 'wrap' }}>
+                <img src="assets/cert-intuit.png" alt="Intuit Bookkeeping Trained"
+                  style={{ display: 'block', width: 110, height: 110 }} />
+                <img src="assets/cert-level1.png" alt="QuickBooks ProAdvisor — Level 1 Certified"
+                  style={{ display: 'block', width: 110, height: 110 }} />
+                <img src="assets/cert-level2.png" alt="QuickBooks ProAdvisor — Level 2 Certified"
+                  style={{ display: 'block', width: 110, height: 110 }} />
+              </div>
+            </div>
+            {!isMobile && (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ width: photoSize, height: photoSize, borderRadius: 999, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--bg-cream-soft)' }}>
+                  <img src="assets/khalid-about.jpg" alt="Khalid Bensmat — Bensmat Bookkeeping"
+                    style={{ width: '100%', height: '100%', objectPosition: 'center 35%', objectFit: 'cover' }} />
+                </div>
+              </div>
+            )}
+          </Container>
+        </section>
+      );
+    }
+
+    /* ── Services ── */
+
+    function ServiceCard({ glyph, name, desc, bullets }) {
+      const [hover, setHover] = useState(false);
+      return (
+        <div
+          onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+          style={{
+            background: 'var(--bg-white)',
+            border: '1px solid var(--border-white)',
+            borderRadius: 12, padding: 28,
+            boxShadow: hover ? 'var(--shadow-md)' : 'var(--shadow-sm)',
+            transform: hover ? 'translateY(-2px)' : 'translateY(0)',
+            transition: 'box-shadow 250ms var(--ease), transform 250ms var(--ease)',
+            display: 'flex', flexDirection: 'column', gap: 14,
+          }}>
+          <div style={{ fontSize: 44, lineHeight: 1 }}>{glyph}</div>
+          <h3 style={{ fontSize: 22, lineHeight: '30px', fontWeight: 600, color: 'var(--ink)', margin: 0, letterSpacing: '-0.01em' }}>{name}</h3>
+          <p style={{ fontSize: 15, lineHeight: '24px', color: 'var(--ink-soft)', margin: 0 }}>{desc}</p>
+          <ul style={{ margin: '4px 0 0', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {bullets.map((b, i) => (
+              <li key={i} style={{ fontSize: 14, color: 'var(--ink)', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                <span style={{ color: 'var(--ink-mute)' }}>–</span>{b}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    function Services() {
+      const isMobile = useIsMobile();
+      return (
+        <Section id="services" eyebrow="What I Do">
+          <h2 style={{
+            fontFamily: 'var(--font-sans)', fontSize: 'clamp(32px, 4vw, 44px)',
+            lineHeight: 1.1, fontWeight: 600, letterSpacing: '-0.01em',
+            color: 'var(--ink)', margin: '0 0 64px', maxWidth: 720,
+          }}>
+            Three ways I help small businesses <Punch>stay clean</Punch>.
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 20 }}>
+            <ServiceCard
+              glyph="📅"
+              name="Monthly Bookkeeping"
+              desc="Books closed on schedule, every month."
+              bullets={['P&L by the 15th', 'Categorization rules built for you', 'Direct line for questions']}
+            />
+            <ServiceCard
+              glyph="🧹"
+              name="Cleanup & Catch-Up"
+              desc="From a year of receipts to clean books — quickly."
+              bullets={['Reconciliation back to day one', 'Fixed-fee scoping', 'Tax-ready handoff']}
+            />
+            <ServiceCard
+              glyph="🎓"
+              name="1:1 Consulting & Advisory"
+              desc="Run your own books with confidence."
+              bullets={['QuickBooks setup', '1:1 walkthroughs', 'Quarterly check-ins']}
+            />
+          </div>
+        </Section>
+      );
+    }
+
+    /* ── Pricing ── */
+
+    function PricingCard({ name, price, popular, bullets }) {
+      const [hover, setHover] = useState(false);
+      return (
+        <div
+          onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+          style={{
+            position: 'relative',
+            background: 'var(--bg-white)',
+            border: popular ? '1px solid var(--gold)' : '1px solid var(--border-white)',
+            borderRadius: 12, padding: '36px 28px 28px',
+            boxShadow: popular ? 'var(--shadow-md)' : (hover ? 'var(--shadow-md)' : 'var(--shadow-sm)'),
+            transform: hover && !popular ? 'translateY(-2px)' : 'translateY(0)',
+            transition: 'box-shadow 250ms var(--ease), transform 250ms var(--ease)',
+            display: 'flex', flexDirection: 'column', gap: 14,
+          }}>
+          {popular && (
+            <div style={{
+              position: 'absolute', top: -12, left: 28,
+              background: 'var(--gold)', color: 'var(--ink)',
+              fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 600,
+              padding: '6px 12px', borderRadius: 999,
+            }}>Most Popular</div>
+          )}
+          <div style={{ fontSize: 22, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.01em' }}>{name}</div>
+          <div style={{ fontSize: 36, fontWeight: 600, color: 'var(--ink)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+            ${price} <span style={{ fontSize: 14, fontWeight: 400, color: 'var(--ink-soft)' }}>starting / mo</span>
+          </div>
+          <hr style={{ border: 0, borderTop: '1px solid var(--border)', margin: '4px 0' }} />
+          <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
+            {bullets.map((b, i) => (
+              <li key={i} style={{ fontSize: 14, color: 'var(--ink)', display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                <span style={{ color: 'var(--forest)', fontWeight: 700, marginTop: -1 }}>✓</span>{b}
+              </li>
+            ))}
+          </ul>
+          <div style={{ marginTop: 8 }}>
+            <Button variant={popular ? 'primary' : 'secondary'} as="a" href="#contact">Get Started</Button>
+          </div>
+        </div>
+      );
+    }
+
+    function Pricing() {
+      const isMobile = useIsMobile();
+      return (
+        <Section id="pricing" eyebrow="Pricing" background="var(--bg-cream-soft)">
+          <h2 style={{
+            fontFamily: 'var(--font-sans)', fontSize: 'clamp(32px, 4vw, 44px)',
+            lineHeight: 1.1, fontWeight: 600, letterSpacing: '-0.01em',
+            color: 'var(--ink)', margin: '0 0 8px', maxWidth: 720,
+          }}>
+            Straightforward pricing, <Punch>no surprises</Punch>.
+          </h2>
+          <p style={{ fontSize: 16, color: 'var(--ink-soft)', margin: '0 0 56px' }}>
+            <span style={{ color: 'var(--gold)' }}>★</span> Love your first month of books, <Punch>or it's on me</Punch>.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 20 }}>
+            <PricingCard name="Essential" price="300"
+              bullets={['Up to 75 monthly transactions', 'Monthly reconciliation', 'P&L delivered by the 20th']} />
+            <PricingCard name="Core" price="500" popular
+              bullets={['Up to 200 monthly transactions', 'Monthly reconciliation', 'P&L by the 15th', 'Quarterly review call']} />
+            <PricingCard name="Strategic" price="800"
+              bullets={['Unlimited transactions', 'Monthly reconciliation', 'P&L by the 10th', 'Monthly strategy call', 'Cash-flow forecasting']} />
+          </div>
+        </Section>
+      );
+    }
+
+    /* ── About ── */
+
+    function About() {
+      const isMobile = useIsMobile();
+      const photoSize = isMobile ? 220 : 320;
+      return (
+        <section id="about" style={{ padding: 'clamp(80px, 12vw, 160px) 0' }}>
+          <Container style={{
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1.4fr',
+            gap: isMobile ? 40 : 80,
+            alignItems: 'center',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: photoSize, height: photoSize, borderRadius: 999, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--bg-cream-soft)' }}>
+                <img src="assets/khalid-about.jpg" alt="Khalid Bensmat — Bensmat Bookkeeping"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 35%' }} />
+              </div>
+            </div>
+            <div>
+              <div style={{ marginBottom: 24 }}><Eyebrow>About Me</Eyebrow></div>
+              <h2 style={{
+                fontFamily: 'var(--font-sans)', fontSize: 'clamp(32px, 4vw, 44px)',
+                lineHeight: 1.1, fontWeight: 600, letterSpacing: '-0.01em',
+                color: 'var(--ink)', margin: '0 0 32px',
+              }}>
+                I'm the bookkeeper. <Punch>Just me.</Punch>
+              </h2>
+              <div style={{ fontSize: 17, lineHeight: '28px', color: 'var(--ink)', maxWidth: 580, display: 'flex', flexDirection: 'column', gap: 18 }}>
+                <p style={{ margin: 0 }}>
+                  Hi, I'm Khalid. I run Bensmat Bookkeeping out of Newark, NJ — a one-person practice serving small businesses across the country.
+                </p>
+                <p style={{ margin: 0 }}>
+                  When you work with Bensmat, you work directly with me. No account managers, no ticket systems, and no handoffs. The person you speak with is the same person managing your books and closing your month.
+                </p>
+                <p style={{ margin: 0 }}>
+                  I'm Intuit Certified and a QuickBooks ProAdvisor, with a focus on helping business owners stay organized, understand their numbers, and keep accurate financial records month after month.
+                </p>
+                <p style={{ margin: 0 }}>
+                  Whether your books are behind, need cleanup, or you're ready for more organized financial systems, I'm here to help.
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: 18, marginTop: 32, flexWrap: 'wrap' }}>
+                <Check>Intuit Certified Bookkeeper</Check>
+                <span style={{ color: 'var(--ink-mute)' }}>·</span>
+                <Check>QuickBooks ProAdvisor</Check>
+                <span style={{ color: 'var(--ink-mute)' }}>·</span>
+                <Check>Newark, NJ</Check>
+              </div>
+              <div style={{ marginTop: 40, paddingTop: 32, borderTop: '1px solid var(--border)' }}>
+                <div style={{ marginBottom: 20 }}><Eyebrow>Certifications</Eyebrow></div>
+                <div style={{ display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <img src="assets/cert-intuit.png" alt="Intuit Bookkeeping Trained"
+                    style={{ width: 92, height: 'auto', display: 'block' }} />
+                  <img src="assets/cert-level1.png" alt="QuickBooks ProAdvisor — Level 1 Certified"
+                    style={{ width: 92, height: 'auto', display: 'block' }} />
+                  <img src="assets/cert-level2.png" alt="QuickBooks ProAdvisor — Level 2 Certified"
+                    style={{ width: 92, height: 'auto', display: 'block' }} />
+                </div>
+              </div>
+            </div>
+          </Container>
+        </section>
+      );
+    }
+
+    /* ── CTA ── */
+
+    function CTA() {
+      return (
+        <section style={{ background: 'var(--bg-forest)', padding: 'clamp(80px, 10vw, 120px) 0', color: 'var(--bg-cream)', textAlign: 'center' }}>
+          <Container>
+            <h2 style={{
+              fontFamily: 'var(--font-sans)', fontSize: 'clamp(36px, 5vw, 56px)',
+              lineHeight: 1.1, fontWeight: 600, letterSpacing: '-0.02em',
+              color: 'var(--bg-cream)', margin: '0 auto 40px', maxWidth: 720,
+            }}>
+              Every month you wait <Punch>costs you clarity</Punch>.
+            </h2>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button variant="forest" as="a" href="#contact">Book a Free Call</Button>
+              <Button variant="ghost" as="a" href="#contact">Send a Message</Button>
+            </div>
+          </Container>
+        </section>
+      );
+    }
+
+    /* ── Contact ── */
+
+    function Field({ label, type = 'text', value, onChange, placeholder, rows }) {
+      const [focus, setFocus] = useState(false);
+      const baseStyle = {
+        fontSize: 17, background: 'var(--bg-white)',
+        border: focus ? '1px solid var(--forest)' : '1px solid var(--border)',
+        borderRadius: 4, padding: '12px 14px', color: 'var(--ink)',
+        boxShadow: focus ? 'var(--shadow-focus)' : 'none',
+        outline: 'none', width: '100%', boxSizing: 'border-box',
+        transition: 'box-shadow 150ms var(--ease), border-color 150ms var(--ease)',
+        fontFamily: 'var(--font-sans)',
+      };
+      return (
+        <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <span style={{ fontSize: 14, color: 'var(--ink-soft)', fontWeight: 500 }}>{label}</span>
+          {rows
+            ? <textarea rows={rows} value={value} onChange={onChange} placeholder={placeholder}
+                onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
+                style={{ ...baseStyle, resize: 'vertical', minHeight: rows * 24 }} />
+            : <input type={type} value={value} onChange={onChange} placeholder={placeholder}
+                onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
+                style={baseStyle} />}
+        </label>
+      );
+    }
+
+    function SelectField({ label, value, onChange, options }) {
+      const [focus, setFocus] = useState(false);
+      return (
+        <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <span style={{ fontSize: 14, color: 'var(--ink-soft)', fontWeight: 500 }}>{label}</span>
+          <select value={value} onChange={onChange}
+            onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
+            style={{
+              fontFamily: 'var(--font-sans)', fontSize: 17, background: 'var(--bg-white)',
+              border: focus ? '1px solid var(--forest)' : '1px solid var(--border)',
+              borderRadius: 4, padding: '12px 14px', color: 'var(--ink)',
+              boxShadow: focus ? 'var(--shadow-focus)' : 'none',
+              outline: 'none', width: '100%', boxSizing: 'border-box',
+            }}>
+            {options.map(o => <option key={o}>{o}</option>)}
+          </select>
+        </label>
+      );
+    }
+
+    function Contact() {
+      const isMobile = useIsMobile();
+      const [name, setName] = useState('');
+      const [phone, setPhone] = useState('');
+      const [email, setEmail] = useState('');
+      const [service, setService] = useState('Monthly Bookkeeping');
+      const [note, setNote] = useState('');
+      const [sent, setSent] = useState(false);
+
+      const submit = (e) => {
+        e.preventDefault();
+        setSent(true);
+        setTimeout(() => setSent(false), 3500);
+      };
+
+      return (
+        <Section id="contact" eyebrow="Contact">
+          <h2 style={{
+            fontFamily: 'var(--font-sans)', fontSize: 'clamp(32px, 4vw, 44px)',
+            lineHeight: 1.1, fontWeight: 600, letterSpacing: '-0.01em',
+            color: 'var(--ink)', margin: '0 0 56px', maxWidth: 720,
+          }}>
+            Two ways to start. <Punch>Both work.</Punch>
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.2fr', gap: isMobile ? 32 : 56 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <a href="mailto:khalid@bensmatbookkeeping.com" style={{
+                background: 'var(--bg-white)', border: '1px solid var(--border-white)',
+                borderRadius: 12, padding: 20, textDecoration: 'none',
+                display: 'flex', alignItems: 'center', gap: 16,
+                color: 'var(--ink)', boxShadow: 'var(--shadow-sm)',
+              }}>
+                <span style={{ fontSize: 28 }}>✉️</span>
+                <div>
+                  <div style={{ fontSize: 13, color: 'var(--ink-mute)', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Email</div>
+                  <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>khalid@bensmatbookkeeping.com</div>
+                </div>
+              </a>
+              <a href="#" style={{
+                background: 'var(--bg-white)', border: '1px solid var(--border-white)',
+                borderRadius: 12, padding: 20, textDecoration: 'none',
+                display: 'flex', alignItems: 'center', gap: 16,
+                color: 'var(--ink)', boxShadow: 'var(--shadow-sm)',
+              }}>
+                <span style={{ fontSize: 28 }}>📅</span>
+                <div>
+                  <div style={{ fontSize: 13, color: 'var(--ink-mute)', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Schedule</div>
+                  <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>Book a 30-min intro call</div>
+                </div>
+              </a>
+              <div style={{
+                background: 'var(--bg-white)', border: '1px solid var(--border-white)',
+                borderRadius: 12, padding: 20,
+                display: 'flex', alignItems: 'center', gap: 16,
+                color: 'var(--ink)', boxShadow: 'var(--shadow-sm)',
+              }}>
+                <span style={{ fontSize: 28 }}>📍</span>
+                <div>
+                  <div style={{ fontSize: 13, color: 'var(--ink-mute)', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Location</div>
+                  <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>Newark, NJ · Serving nationwide</div>
+                </div>
+              </div>
+            </div>
+
+            <form onSubmit={submit} style={{
+              background: 'var(--bg-white)', border: '1px solid var(--border-white)',
+              borderRadius: 12, padding: 28, boxShadow: 'var(--shadow-sm)',
+              display: 'flex', flexDirection: 'column', gap: 16,
+            }}>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 16 }}>
+                <Field label="Name" value={name} onChange={e => setName(e.target.value)} placeholder="Your name" />
+                <Field label="Phone" value={phone} onChange={e => setPhone(e.target.value)} placeholder="(555) 555-5555" />
+              </div>
+              <Field label="Email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@business.com" />
+              <SelectField label="Service" value={service} onChange={e => setService(e.target.value)}
+                options={['Monthly Bookkeeping', 'Cleanup & Catch-Up', '1:1 Consulting & Advisory', 'Not sure yet']} />
+              <Field label="Anything else?" value={note} onChange={e => setNote(e.target.value)} rows={4}
+                placeholder="Tell me a bit about your business — industry, monthly volume, what you're using now…" />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>
+                <Button onClick={submit} type="submit">Send Message →</Button>
+                {sent && <span style={{ fontSize: 14, color: 'var(--forest)' }}>✓ Got it — I'll reply within one business day.</span>}
+              </div>
+            </form>
+          </div>
+        </Section>
+      );
+    }
+
+    /* ── Footer ── */
+
+    function Footer() {
+      const isMobile = useIsMobile();
+      return (
+        <footer style={{ background: 'var(--bg-forest)', color: 'var(--bg-cream)', padding: '64px 0 40px' }}>
+          <Container>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '2fr 1fr', gap: isMobile ? 32 : 56, paddingBottom: 40, borderBottom: '1px solid rgba(244,239,228,0.12)' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                  <Logo size={32} light />
+                  <span style={{ fontWeight: 600, fontSize: 18, color: 'var(--bg-cream)' }}>Bensmat Bookkeeping</span>
+                </div>
+                <p style={{ color: 'var(--moss)', fontSize: 14, lineHeight: '22px', margin: 0, maxWidth: 360 }}>
+                  Clean books. Accurate numbers. Real communication.
+                </p>
+              </div>
+              <div>
+                <h4 style={{ fontSize: 13, color: 'var(--moss)', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 14px' }}>Contact</h4>
+                <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8, fontSize: 14 }}>
+                  <li><a href="mailto:khalid@bensmatbookkeeping.com" style={{ color: 'var(--bg-cream)', textDecoration: 'none' }}>khalid@bensmatbookkeeping.com</a></li>
+                  <li style={{ color: 'var(--moss)' }}>Newark, NJ</li>
+                  <li style={{ color: 'var(--moss)' }}>Serving businesses nationwide</li>
+                </ul>
+              </div>
+            </div>
+            <div style={{ paddingTop: 24, color: 'var(--moss)', fontSize: 13, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+              <span>© 2026 Bensmat Bookkeeping · Khalid Bensmat</span>
+              <span style={{ color: 'var(--moss)' }}>Built with care in Newark, NJ.</span>
+            </div>
+          </Container>
+        </footer>
+      );
+    }
+
+    /* ── App ── */
+
+    function App() {
+      return (
+        <>
+          <Nav />
+          <Hero />
+          <Services />
+          <Pricing />
+          <About />
+          <CTA />
+          <Contact />
+          <Footer />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
