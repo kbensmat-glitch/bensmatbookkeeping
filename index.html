@@ -613,6 +613,33 @@
       );
     }
 
+    /* ── CopyableEmail ── */
+
+    function CopyableEmail({ address, size = 18, color = 'var(--ink)' }) {
+      const [copied, setCopied] = useState(false);
+      const copy = (e) => {
+        e.preventDefault();
+        navigator.clipboard.writeText(address).then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+      };
+      return (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+          <a href={`mailto:${address}`} style={{ fontSize: size, fontWeight: 600, color, textDecoration: 'none' }}>
+            {address}
+          </a>
+          <button onClick={copy} title="Copy email" style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            padding: '2px 4px', borderRadius: 4, color: copied ? 'var(--forest)' : 'var(--ink-mute)',
+            fontSize: 13, fontWeight: 500, transition: 'color 150ms',
+          }}>
+            {copied ? '✓ Copied' : '⎘'}
+          </button>
+        </span>
+      );
+    }
+
     /* ── Contact ── */
 
     function Field({ label, type = 'text', value, onChange, placeholder, rows }) {
@@ -667,12 +694,27 @@
       const [email, setEmail] = useState('');
       const [service, setService] = useState('Monthly Bookkeeping');
       const [note, setNote] = useState('');
-      const [sent, setSent] = useState(false);
+      const [status, setStatus] = useState('idle'); // idle | sending | sent | error
 
-      const submit = (e) => {
+      const submit = async (e) => {
         e.preventDefault();
-        setSent(true);
-        setTimeout(() => setSent(false), 3500);
+        setStatus('sending');
+        try {
+          const res = await fetch('https://formspree.io/f/xbdwvlpo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({ name, phone, email, service, message: note }),
+          });
+          if (res.ok) {
+            setStatus('sent');
+            setName(''); setPhone(''); setEmail('');
+            setService('Monthly Bookkeeping'); setNote('');
+          } else {
+            setStatus('error');
+          }
+        } catch {
+          setStatus('error');
+        }
       };
 
       return (
@@ -686,18 +728,18 @@
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.2fr', gap: isMobile ? 32 : 56 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <a href="mailto:khalid@bensmatbookkeeping.com" style={{
+              <div style={{
                 background: 'var(--bg-white)', border: '1px solid var(--border-white)',
-                borderRadius: 12, padding: 20, textDecoration: 'none',
+                borderRadius: 12, padding: 20,
                 display: 'flex', alignItems: 'center', gap: 16,
                 color: 'var(--ink)', boxShadow: 'var(--shadow-sm)',
               }}>
                 <span style={{ fontSize: 28 }}>✉️</span>
                 <div>
                   <div style={{ fontSize: 13, color: 'var(--ink-mute)', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 500 }}>Email</div>
-                  <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>khalid@bensmatbookkeeping.com</div>
+                  <CopyableEmail address="khalid@bensmatbookkeeping.com" size={18} />
                 </div>
-              </a>
+              </div>
               <a href="#" style={{
                 background: 'var(--bg-white)', border: '1px solid var(--border-white)',
                 borderRadius: 12, padding: 20, textDecoration: 'none',
@@ -739,8 +781,11 @@
               <Field label="Anything else?" value={note} onChange={e => setNote(e.target.value)} rows={4}
                 placeholder="Tell me a bit about your business — industry, monthly volume, what you're using now…" />
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>
-                <Button onClick={submit} type="submit">Send Message →</Button>
-                {sent && <span style={{ fontSize: 14, color: 'var(--forest)' }}>✓ Got it — I'll reply within one business day.</span>}
+                <Button onClick={submit} type="submit" disabled={status === 'sending'}>
+                  {status === 'sending' ? 'Sending…' : 'Send Message →'}
+                </Button>
+                {status === 'sent' && <span style={{ fontSize: 14, color: 'var(--forest)' }}>✓ Got it — I'll reply within one business day.</span>}
+                {status === 'error' && <span style={{ fontSize: 14, color: '#c0392b' }}>Something went wrong — please try emailing directly.</span>}
               </div>
             </form>
           </div>
@@ -768,7 +813,7 @@
               <div>
                 <h4 style={{ fontSize: 13, color: 'var(--moss)', fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 14px' }}>Contact</h4>
                 <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8, fontSize: 14 }}>
-                  <li><a href="mailto:khalid@bensmatbookkeeping.com" style={{ color: 'var(--bg-cream)', textDecoration: 'none' }}>khalid@bensmatbookkeeping.com</a></li>
+                  <li><CopyableEmail address="khalid@bensmatbookkeeping.com" size={14} color="var(--bg-cream)" /></li>
                   <li style={{ color: 'var(--moss)' }}>Newark, NJ</li>
                   <li style={{ color: 'var(--moss)' }}>Serving businesses nationwide</li>
                 </ul>
