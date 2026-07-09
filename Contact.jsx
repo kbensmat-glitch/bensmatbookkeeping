@@ -72,7 +72,7 @@ function Contact() {
         }}>
           <Row emoji="📞" label="Phone" text="(973) 393-6805" href="tel:+19733936805" />
           <Row emoji="✉️" label="Email" text="khalid@bensmatbookkeeping.com" href="mailto:khalid@bensmatbookkeeping.com" />
-          <Row emoji="📅" label="Schedule" text="Book a 30-min intro call" href="#" />
+          <Row emoji="📅" label="Schedule" text="Book a 30-min intro call" href="#schedule" />
           <Row emoji="📍" label="Location" text="Newark, NJ · Serving nationwide" last />
         </div>
 

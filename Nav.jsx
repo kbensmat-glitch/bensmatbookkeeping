@@ -41,7 +41,7 @@ function Nav() {
     }}>Book a Free Call</a>
   );
 
-  const links = ['services', 'pricing', 'about', 'contact'];
+  const links = ['services', 'pricing', 'about', 'schedule', 'contact'];
 
   return (
     <nav style={{
